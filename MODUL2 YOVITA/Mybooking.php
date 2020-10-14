@@ -42,7 +42,7 @@
                       <?php echo rand(134564,545675); ?>
                       </th>
                       <td>
-                        <?php echo $_GET['nama']; ?>
+                        <?php echo $_POST['nama']; ?>
                       </td>
                       <td>
                       <?php 

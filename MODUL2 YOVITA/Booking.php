@@ -43,7 +43,7 @@
             <div class="container">
               <div class="row ">
                 <div class="col-sm-1"></div>
-                  <form action="/MODUL2 YOVITA/Mybooking.php" method="get">
+                  <form action="/MODUL2 YOVITA/Mybooking.php" method="post">
                     <div class="form-group row">
                       <div class="col-sm-12">
                         <label for="nama">Name</label>
@@ -106,7 +106,7 @@
 
                           <div class="form-group row">
                             <div class="col-sm-12">
-                            <input class="btn btn-primary btn-block" type="submit" Value="Book">
+                            <input class="btn btn-primary btn-block" type="reset" Value="Book">
                           </div>
                       </div>
                     </form>
