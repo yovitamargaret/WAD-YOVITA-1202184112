@@ -1,0 +1,15 @@
+.container {
+    margin: 0 auto;
+    
+}
+ input[type=radio]{
+ margin: 10px 10px 0 10px;
+} 
+ 
+label{
+ color: black;
+ text-shadow: 0 1px 0 #fff;
+ font-size: 14px;
+ font-weight: bold;
+}
+ 
