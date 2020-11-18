@@ -24,7 +24,7 @@
      <?php 
 		include 'config.php';
 		$no = 0;
-    $data = mysqli_query($config,"select * from event_table");
+    $data = mysqli_query($config,"delete * from event_table");
         
         if ($no === mysqli_num_rows($data)) {
     ?>

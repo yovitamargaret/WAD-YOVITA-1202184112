@@ -1,5 +1,5 @@
 <?php
-include 'Config.php';
+
 if (isset($_POST['name'])) {
     $name = $_POST ['name'];
     $deskripsi = $_POST ['deskripsi'];
