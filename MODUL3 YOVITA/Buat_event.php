@@ -27,7 +27,7 @@
         <div class="card">
           <div class="card-header bg-danger"></div>
           <div class="card-body">
-            <form action="simpan.php" method="post">
+            <form action="simpan.php" method="POST">
                 <div class="form-group">
                     <label for="nama" >Name</label>
                     <input type="input" name="name" class="form-control" id="nama">

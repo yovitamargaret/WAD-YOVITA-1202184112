@@ -82,7 +82,7 @@
                 </div>
                 <label for="gambar">Upload Gambar</label><br>
                 <div class="custom-file">
-                    <input type="file" value="<?php echo $detail['gambar']; ?>"name="gambar" id="customFile">
+                    <input type="text" value="<?php echo $detail['gambar']; ?>"name="gambar" id="customFile">
                     <label class="custom-file-label text-muted" for="customFile">Pilih gambar</label>
                 </div><p><br>
                 <div class="form-group">
