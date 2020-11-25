@@ -1,26 +1,38 @@
 <?php
-require "Config.php";
+if(isset($_POST['login'])){
+  include('Config.php');
 
-if(isset($_POST["login"])){
+  $email = $_POST['email'];
+  $password = $_POST['password'];               
 
-  $email = $_POST["email"];
-  $password = $_POST["password"];
+  //cek email apakah sudah terdaftar
+  $cek_email = mysqli_query($config, "SELECT * FROM user WHERE email = '$email'");
+  $data_user = $cek_email->fetch_array();
 
-  $result = mysqli_query($config, "SELECT * FROM user WHERE email = '$email'");
-
-  //check user
-  if( mysqli_num_rows($result) === 1){
   //cek password
-    $row = mysqli_fetch_assoc($result);
-    if (password_verify($password, $row["password"])){
-      session_start();
-      $_SESSION["user"] = $row["id"];
-      header("Location:home.php");
-      exit;
-    }
-  }
-  $error = true;
+  $cek_password = mysqli_query($config, "SELECT * FROM user WHERE email = '$email' and password = '$password'");            
 
+  if (mysqli_num_rows($cek_email) == 0){
+      echo "<div class='alert alert-warning' role='alert'>
+              Email belum terdaftar!
+          </div>";
+  } elseif (mysqli_num_rows($cek_email) == 1){                
+      if($cek_password){                    
+          session_start();
+          $_SESSION['email'] = $email;
+          $_SESSION['password'] = $password;
+          $_SESSION['id'] = $data_user['id'];
+          $_SESSION['nama'] = $data_user['nama'];
+          //cookie
+          if(isset($_POST['remember'])) {                        
+              setcookie ('email', $email, time()+ 120);
+              setcookie ('password', $password, time()+ 120);                                                
+          }                    
+          header("Location: home.php");
+      } else {
+          $error = true;                                      
+      }
+  }            
 }
 
 ?>
@@ -66,11 +78,17 @@ if(isset($_POST["login"])){
                         <div class="form-group">
                                     <label for="email">E-mail</label>
                                     <input type="email" name="email" class="form-control" id="email"
-                                        placeholder="yovitaabigail2013@gmail.com" required>
+                                        placeholder="yovitaabigail2013@gmail.com" required
+                                        value="<?php if(isset($_COOKIE['email'])) { echo $_COOKIE['email']; } ?>">
                             </div>
                             <div class="form-group">
                             <label for="password">Kata Sandi</label>
-                                    <input type="password" name="password"class="form-control" id="password" required>
+                                    <input type="password" name="password"class="form-control" id="password" required
+                                    value="<?php if(isset($_COOKIE['password'])) { echo $_COOKIE['password']; } ?>">
+                            </div>
+                            <div class="form-group form-check">
+                              <input type="checkbox" class="form-check-input" name="remember" id="remember">
+                              <label class="form-check-label" for="remember" style="color: black;">Remember me</label>
                             </div>
                             <button type="submit" name="login" class="btn btn-primary btn-lg">Login</button>
                             <p class="mt-3" style="color: black;">Belum punya akun? <a href="Register.php">Registrasi</a></p>

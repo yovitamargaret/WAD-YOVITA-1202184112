@@ -11,28 +11,36 @@
 
     <script src="https://kit.fontawesome.com/b13f1bd77f.js" crossorigin="anonymous"></script>
     <?php
-        include ('Config.php');
         session_start();
-        $id = (isset($_SESSION['id']));
-        $query= "SELECT * from cart WHERE user_id='$id'";
-        $select= mysqli_query($config,$query);
+        if (!isset($_SESSION['email'])){
+            header("Location: Login.php");
+        }
+        
+        include('Config.php');
+        $user = $_SESSION['email'];        
+        $select = mysqli_query($config, "SELECT * FROM user WHERE email = '$user'");        
+        $data_user = $select->fetch_array();
+        $id_user = $data_user['id'];
+    
+        $cart = mysqli_query($config, "SELECT * FROM cart WHERE user_id = '$id_user'");
     ?>
     
   </head>
   <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-navbar-custom" style="background-color:whitesmoke;">
-        <a class="navbar-brand" href="#"><b>WAD Beauty</b></a>
+        <a class="navbar-brand" href="home.php"><b>WAD Beauty</b></a>
         <ul class="navbar-nav navbar-collapse justify-content-end">
         <li class="nav-item">
         <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i></a>
         </li>
         <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Selamat datang
-        </a>
+          Selamat Datang,
+          <a type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <?php echo $data_user['nama']; ?>
+                </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="Profile.php">Profile</a>
-          <a class="dropdown-item" href="#">Logout</a>
+          <a class="dropdown-item" href="logout.php">Logout</a>
         </div>
       </li>
         </ul>
@@ -49,16 +57,45 @@
       <th scope="col">Aksi</th>
     </tr>
   </thead>
+  <form action="" method="get">
   <tbody>
-      <?php while ($selects = mysqli_fetch_assoc($select)){?>
-    <tr>
-      <td scope="row"><?=$selects['id']?></td>
-      <td><?=$selects['nama_barang']?></td>
-      <td><?=$selects['harga']?></td>
-      <td><a name="delete" id="delete" class="btn btn-danger" role="button" href="hapus.php?id=<?= $selects['id']?>" >Delete</a></td>
-    </tr>
-      <?php }?>
+  <?php
+                if($cart->num_rows > 0){
+                    while ($data = mysqli_fetch_array($cart)){ ?>
+            <tr>
+                <td hidden><?= $data['id'] ?></td>
+                <td>
+                    <?php 
+                        $no = 1;                        
+                        echo $no++;
+                    ?>
+                </td>
+                <td><?= $data['nama_barang'] ?></td>  
+                <td><?php echo "Rp".$data['harga']; ?></td>                
+                <td>
+                    <a href="delete.php?id=<?= $data['id']; ?>" type="submit" class="btn btn-danger">Hapus</a>
+                </td>                          
+            </tr>  
+            <?php }
+            } ?>
+            <tr>
+                <th>Total</th>
+                <th colspan="3">
+                    <?php                                                
+                        if($cart->num_rows > 0){
+                            $sum = mysqli_query($config, "SELECT SUM(harga) AS total_harga FROM cart WHERE user_id = '$id_user'");
+                            $row = mysqli_fetch_assoc($sum);
+                            $result = $row['total_harga'];
+                            echo "Rp".$result;
+                        } else {
+                            echo "Rp0";
+                        }
+                        
+                    ?>
+                </th>
+            </tr>                      
   </tbody>
+  </form>
 </table>
 </div>
 </div>
