@@ -24,7 +24,7 @@ Route::get('/', function () {
 Route::get('/homepage', function () {
     return view('homepage');
 });
-Route::resource('products', ProductController::class);
-Route::resource('order', OrderController::class);
+Route::post('products', ProductController::class);
+Route::post('order', OrderController::class);
 Route::view('/order-form', 'orders/create');
-Route::resource('history', HistoryController::class);
+Route::post('history', HistoryController::class);

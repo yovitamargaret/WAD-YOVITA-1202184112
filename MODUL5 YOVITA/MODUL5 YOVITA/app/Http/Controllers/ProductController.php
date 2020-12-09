@@ -51,7 +51,6 @@ class ProductController extends Controller
         $product->stock = $request->stock;
         $product->img_path = $filename_data;
 
-        $product->save();
     
         return redirect()->route('products.index')
                         ->with('success','Produk berhasil ditambahkan.');
